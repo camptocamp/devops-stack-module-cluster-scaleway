@@ -25,17 +25,17 @@ variable "tags" {
   description = "Tags applied to all ressources."
 }
 
+variable "kubernetes_version" {
+  default     = "1.24.5"
+  type        = string
+  description = "The version of the Kubernetes cluster"
+}
+
 variable "admission_plugins" {
   type        = list(string)
   default     = []
   description = "The list of admission plugins to enable on the cluster"
-}
 
-variable "node_pools_defaults" {
-  default     = {}
-  description = "Default configuration for Kubernetes cluster pools"
-  type        = map(any)
-}
 
 # ###############################################
 # Variable for additional resources/configuration 
@@ -51,7 +51,17 @@ variable "lb_type" {
   type        = string
 }
 
-variable "nodepools" {
+variable "lb_name" {
+  description = "Name of the load balancer"
+  type        = string
+}
+
+variable "zone" {
+  description = "Zone in the region"
+  type        = string
+}
+
+variable "node_pools" {
   description = "The node pools to create."
   type        = any
   default     = null
