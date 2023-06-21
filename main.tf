@@ -1,24 +1,22 @@
 resource "scaleway_lb_ip" "this" {
-  description = "IP for devops-stack"
-  tags = var.cluster_tags
   zone = var.zone
 }
 
 resource "scaleway_lb" "this" {
-  name = var.lb_name
+  name  = var.lb_name
   zone  = var.zone
+  tags  = var.cluster_tags
   ip_id = scaleway_lb_ip.this.id
   type  = var.lb_type
-  tags  = var.cluster_tags
 }
 
-module "kapsule" {
+module "cluster" {
   source              = "particuleio/kapsule/scaleway"
   version             = "7.1.0"
   cluster_name        = var.cluster_name
   cluster_description = var.cluster_description
   cluster_tags        = var.cluster_tags
-  tags                = var.tags
+  kubernetes_version  = var.kubernetes_version
   admission_plugins   = var.admission_plugins
   node_pools          = var.node_pools
 }

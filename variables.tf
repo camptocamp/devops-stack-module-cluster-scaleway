@@ -35,7 +35,7 @@ variable "admission_plugins" {
   type        = list(string)
   default     = []
   description = "The list of admission plugins to enable on the cluster"
-
+}
 
 # ###############################################
 # Variable for additional resources/configuration 
