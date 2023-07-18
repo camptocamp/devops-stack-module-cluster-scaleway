@@ -12,21 +12,17 @@ output "lb_id" {
 
 output "kubeconfig" {
   value = {
-    host                   = module.cluster.kubeconfig.0.host
-    token                  = module.cluster.kubeconfig.0.token
-    cluster_ca_certificate = base64decode(module.cluster.kubeconfig.0.cluster_ca_certificate)
+    host                   = null_resource.kubeconfig.triggers.host
+    token                  = null_resource.kubeconfig.triggers.token
+    cluster_ca_certificate = base64decode(null_resource.kubeconfig.triggers.cluster_ca_certificate)
   }
 }
-#
+
 output "kubeconfig_file" {
-  value     = module.cluster.kubeconfig_file
+  value     = scaleway_k8s_cluster.this.kubeconfig.0.config_file
   sensitive = true
 }
-#
+
 #output "node_pools" {
-#  value = module.cluster.node_pools
-#}
-#
-#output "cluster_id" {
-#  value = module.cluster.id
+#  value = scaleway_k8s_cluster.this
 #}
