@@ -10,16 +10,20 @@ output "lb_id" {
   value = scaleway_lb.this.id
 }
 
+#output "kubeconfig" {
+#  value = {
+#    host                   = null_resource.kubeconfig.triggers.host
+#    token                  = null_resource.kubeconfig.triggers.token
+#    cluster_ca_certificate = base64decode(null_resource.kubeconfig.triggers.cluster_ca_certificate)
+#  }
+#}
+
 output "kubeconfig" {
-  value = {
-    host                   = null_resource.kubeconfig.triggers.host
-    token                  = null_resource.kubeconfig.triggers.token
-    cluster_ca_certificate = base64decode(null_resource.kubeconfig.triggers.cluster_ca_certificate)
-  }
+  value = module.cluster.kubeconfig
 }
 
 output "kubeconfig_file" {
-  value     = scaleway_k8s_cluster.this.kubeconfig.0.config_file
+  value     = module.cluster.kubeconfig_file
   sensitive = true
 }
 
