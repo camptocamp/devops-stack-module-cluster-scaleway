@@ -11,10 +11,10 @@ resource "scaleway_lb" "this" {
 }
 
 module "cluster" {
-  source = "git::https://github.com/xaving/terraform-scaleway-kapsule.git?ref=kubeconfig-dependency-nodepool"
-  #source              = "xaving/kapsule/scaleway"
-  #version             = "7.1.0"
+  source              = "particuleio/kapsule/scaleway"
+  version             = "7.1.1"
   cluster_name        = var.cluster_name
+  cluster_type        = var.cluster_type
   cluster_description = var.cluster_description
   cluster_tags        = var.cluster_tags
   kubernetes_version  = var.kubernetes_version

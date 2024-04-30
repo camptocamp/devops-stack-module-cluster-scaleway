@@ -7,6 +7,15 @@ variable "cluster_name" {
   description = "The name for the Kubernetes cluster"
 }
 
+variable "cluster_type" {
+  description = "The type of cluster"
+  type        = string
+  default     = "kapsule"
+  validation {
+    condition     = contains(["kapsule", "multicloud"], var.cluster_type)
+    error_message = "Values can only be \"kapsule\" or \"multicloud\"."
+  }
+}
 variable "cluster_description" {
   type        = string
   description = "A description for the Kubernetes cluster"
