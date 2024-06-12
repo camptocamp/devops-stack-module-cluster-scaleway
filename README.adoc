@@ -1,0 +1,43 @@
+= devops-stack-module-cluster-scaleway
+
+A https://devops-stack.io/[DevOps Stack] module to deploy a Kosmos Kubernetes cluster on Scaleway Services K8s.
+
+This module is mainly a wrapper around the module: https://registry.terraform.io/modules/particuleio/kapsule/scaleway/latest[particuleio/kapsule/scaleway] which will create the https://www.scaleway.com/en/docs/containers/kubernetes/[K8s cluster].
+
+In addition a https://www.scaleway.com/en/docs/tutorials/get-started-kubernetes-loadbalancer/[load balancer] will be added.
+
+The `node_pools` variable specifies the parameter of the https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/k8s_pool[k8s_pool]. 
+
+Here is an example that creates a K8s pool with 2 virtual machines of type `DEV1-L`:
+
+----
+  node_pools = {
+    config1 = {
+      node_type           = "DEV1-L"
+      size                = 2
+      min_size            = 2
+      max_size            = 2
+      autoscaling         = true
+      autohealing         = true
+      container_runtime   = "containerd"
+      wait_for_pool_ready = true
+    }
+  }
+----
+
+TIP: You can check out available instance types on the https://www.scaleway.com/en/docs/compute/instances/reference-content/choosing-instance-type/[official Scaleway documentation pages].
+
+== Technical Reference
+
+// BEGIN_TF_DOCS
+
+// END_TF_DOCS
+
+=== Reference in table format
+
+.Show tables
+[%collapsible]
+====
+// BEGIN_TF_TABLES
+
+// END_TF_TABLES
