@@ -1,0 +1,318 @@
+= devops-stack-module-cluster-scaleway
+
+A https://devops-stack.io/[DevOps Stack] module to deploy a Kosmos Kubernetes cluster on Scaleway Services K8s.
+
+This module is mainly a wrapper around the module: https://registry.terraform.io/modules/particuleio/kapsule/scaleway/latest[particuleio/kapsule/scaleway] which will create the https://www.scaleway.com/en/docs/containers/kubernetes/[K8s cluster].
+
+In addition a https://www.scaleway.com/en/docs/tutorials/get-started-kubernetes-loadbalancer/[load balancer] will be added.
+
+The `node_pools` variable specifies the parameter of the https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/k8s_pool[k8s_pool]. 
+
+Here is an example that creates a K8s pool with 2 virtual machines of type `DEV1-L`:
+
+----
+  node_pools = {
+    config1 = {
+      node_type           = "DEV1-L"
+      size                = 2
+      min_size            = 2
+      max_size            = 2
+      autoscaling         = true
+      autohealing         = true
+      container_runtime   = "containerd"
+      wait_for_pool_ready = true
+    }
+  }
+----
+
+TIP: You can check out available instance types on the https://www.scaleway.com/en/docs/compute/instances/reference-content/choosing-instance-type/[official Scaleway documentation pages].
+
+== Technical Reference
+
+// BEGIN_TF_DOCS
+=== Requirements
+
+The following requirements are needed by this module:
+
+- [[requirement_external]] <<requirement_external,external>> (~> 2.1)
+
+- [[requirement_null]] <<requirement_null,null>> (~> 3.1)
+
+- [[requirement_scaleway]] <<requirement_scaleway,scaleway>> (~> 2.2)
+
+=== Providers
+
+The following providers are used by this module:
+
+- [[provider_scaleway]] <<provider_scaleway,scaleway>> (~> 2.2)
+
+=== Modules
+
+The following Modules are called:
+
+==== [[module_cluster]] <<module_cluster,cluster>>
+
+Source: particuleio/kapsule/scaleway
+
+Version: 7.1.1
+
+=== Resources
+
+The following resources are used by this module:
+
+- https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/lb[scaleway_lb.this] (resource)
+- https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/lb_ip[scaleway_lb_ip.this] (resource)
+
+=== Required Inputs
+
+The following input variables are required:
+
+==== [[input_cluster_name]] <<input_cluster_name,cluster_name>>
+
+Description: The name for the Kubernetes cluster
+
+Type: `string`
+
+==== [[input_lb_type]] <<input_lb_type,lb_type>>
+
+Description: The type of LB to deploy.
+
+Type: `string`
+
+==== [[input_lb_name]] <<input_lb_name,lb_name>>
+
+Description: Name of the load balancer
+
+Type: `string`
+
+==== [[input_zone]] <<input_zone,zone>>
+
+Description: Zone in the region
+
+Type: `string`
+
+=== Optional Inputs
+
+The following input variables are optional (have default values):
+
+==== [[input_cluster_type]] <<input_cluster_type,cluster_type>>
+
+Description: The type of cluster
+
+Type: `string`
+
+Default: `"multicloud"`
+
+==== [[input_cluster_description]] <<input_cluster_description,cluster_description>>
+
+Description: A description for the Kubernetes cluster
+
+Type: `string`
+
+Default: `null`
+
+==== [[input_cluster_tags]] <<input_cluster_tags,cluster_tags>>
+
+Description: The tags associated with the Kubernetes cluster
+
+Type: `list(any)`
+
+Default: `[]`
+
+==== [[input_tags]] <<input_tags,tags>>
+
+Description: Tags applied to all ressources.
+
+Type: `list(string)`
+
+Default: `[]`
+
+==== [[input_kubernetes_version]] <<input_kubernetes_version,kubernetes_version>>
+
+Description: The version of the Kubernetes cluster
+
+Type: `string`
+
+Default: `"1.24.5"`
+
+==== [[input_admission_plugins]] <<input_admission_plugins,admission_plugins>>
+
+Description: The list of admission plugins to enable on the cluster
+
+Type: `list(string)`
+
+Default: `[]`
+
+==== [[input_base_domain]] <<input_base_domain,base_domain>>
+
+Description: A DNS zone if any
+
+Type: `string`
+
+Default: `null`
+
+==== [[input_node_pools]] <<input_node_pools,node_pools>>
+
+Description: The node pools to create.
+
+Type: `any`
+
+Default: `null`
+
+=== Outputs
+
+The following outputs are exported:
+
+==== [[output_base_domain]] <<output_base_domain,base_domain>>
+
+Description: n/a
+
+==== [[output_lb_ip_address]] <<output_lb_ip_address,lb_ip_address>>
+
+Description: n/a
+
+==== [[output_lb_id]] <<output_lb_id,lb_id>>
+
+Description: n/a
+
+==== [[output_kubeconfig]] <<output_kubeconfig,kubeconfig>>
+
+Description: n/a
+
+==== [[output_kubeconfig_file]] <<output_kubeconfig_file,kubeconfig_file>>
+
+Description: n/a
+// END_TF_DOCS
+
+=== Reference in table format
+
+.Show tables
+[%collapsible]
+====
+// BEGIN_TF_TABLES
+= Requirements
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Version
+|[[requirement_external]] <<requirement_external,external>> |~> 2.1
+|[[requirement_null]] <<requirement_null,null>> |~> 3.1
+|[[requirement_scaleway]] <<requirement_scaleway,scaleway>> |~> 2.2
+|===
+
+= Providers
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Version
+|[[provider_scaleway]] <<provider_scaleway,scaleway>> |~> 2.2
+|===
+
+= Modules
+
+[cols="a,a,a",options="header,autowidth"]
+|===
+|Name |Source |Version
+|[[module_cluster]] <<module_cluster,cluster>> |particuleio/kapsule/scaleway |7.1.1
+|===
+
+= Resources
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Type
+|https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/lb[scaleway_lb.this] |resource
+|https://registry.terraform.io/providers/scaleway/scaleway/latest/docs/resources/lb_ip[scaleway_lb_ip.this] |resource
+|===
+
+= Inputs
+
+[cols="a,a,a,a,a",options="header,autowidth"]
+|===
+|Name |Description |Type |Default |Required
+|[[input_cluster_name]] <<input_cluster_name,cluster_name>>
+|The name for the Kubernetes cluster
+|`string`
+|n/a
+|yes
+
+|[[input_cluster_type]] <<input_cluster_type,cluster_type>>
+|The type of cluster
+|`string`
+|`"multicloud"`
+|no
+
+|[[input_cluster_description]] <<input_cluster_description,cluster_description>>
+|A description for the Kubernetes cluster
+|`string`
+|`null`
+|no
+
+|[[input_cluster_tags]] <<input_cluster_tags,cluster_tags>>
+|The tags associated with the Kubernetes cluster
+|`list(any)`
+|`[]`
+|no
+
+|[[input_tags]] <<input_tags,tags>>
+|Tags applied to all ressources.
+|`list(string)`
+|`[]`
+|no
+
+|[[input_kubernetes_version]] <<input_kubernetes_version,kubernetes_version>>
+|The version of the Kubernetes cluster
+|`string`
+|`"1.24.5"`
+|no
+
+|[[input_admission_plugins]] <<input_admission_plugins,admission_plugins>>
+|The list of admission plugins to enable on the cluster
+|`list(string)`
+|`[]`
+|no
+
+|[[input_base_domain]] <<input_base_domain,base_domain>>
+|A DNS zone if any
+|`string`
+|`null`
+|no
+
+|[[input_lb_type]] <<input_lb_type,lb_type>>
+|The type of LB to deploy.
+|`string`
+|n/a
+|yes
+
+|[[input_lb_name]] <<input_lb_name,lb_name>>
+|Name of the load balancer
+|`string`
+|n/a
+|yes
+
+|[[input_zone]] <<input_zone,zone>>
+|Zone in the region
+|`string`
+|n/a
+|yes
+
+|[[input_node_pools]] <<input_node_pools,node_pools>>
+|The node pools to create.
+|`any`
+|`null`
+|no
+
+|===
+
+= Outputs
+
+[cols="a,a",options="header,autowidth"]
+|===
+|Name |Description
+|[[output_base_domain]] <<output_base_domain,base_domain>> |n/a
+|[[output_lb_ip_address]] <<output_lb_ip_address,lb_ip_address>> |n/a
+|[[output_lb_id]] <<output_lb_id,lb_id>> |n/a
+|[[output_kubeconfig]] <<output_kubeconfig,kubeconfig>> |n/a
+|[[output_kubeconfig_file]] <<output_kubeconfig_file,kubeconfig_file>> |n/a
+|===
+// END_TF_TABLES
